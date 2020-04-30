@@ -20,30 +20,52 @@ public class Bullet {
 
     private boolean living=true;
 
-    public Bullet(int x, int y,TankFrame tankFrame) {
+    //坦克的方向
+    private Dir dir;
+
+    public Bullet(int x, int y,Dir dir,TankFrame tankFrame) {
         this.x = x;
         this.y = y;
+        this.dir = dir;
         this.tankFrame = tankFrame;
     }
 
     //画子弹
     public void paint(Graphics g) {
-        if(!living){
-            tankFrame.removeBullets(this);
-        }
         Color color = g.getColor();
         g.setColor(Color.red);
         g.fillOval(x,y,WIDTH,HEIGHT);
         g.setColor(color);
-        if(x>=TankFrame.WIDTH || y>=TankFrame.HEIGHT){
-            living=false;
+        //边界检测
+        checkBound();
+        if(!living){
+            tankFrame.removeBullets(this);
+        }else{
+            switch (dir) {
+                case LEFT:
+                    x -= speed;
+                    break;
+                case RIGHT:
+                    x += speed;
+                    break;
+                case UP:
+                    y -= speed;
+                    break;
+                case DOWN:
+                    y += speed;
+                    break;
+                default:
+                    break;
+            }
         }
-        x+=speed;
-        y+=speed;
-
 
     }
 
+    private void checkBound() {
+        if(x<=0 || x>=TankFrame.WIDTH || y<=0 || y>=TankFrame.HEIGHT){
+            living=false;
+        }
+    }
 
 
 }
