@@ -5,6 +5,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * *
@@ -13,13 +16,19 @@ import java.awt.event.WindowEvent;
  * @date 2020/4/28
  */
 public class TankFrame extends Frame {
+    public final static int WIDTH=800;
+    public final static int HEIGHT=800;
     private Tank tank;
+    /**
+     *   子弹
+     */
+    private List<Bullet> bullets = new ArrayList<Bullet>();
     /**
      *
      */
     public TankFrame(){
-        tank = new Tank(200,200);
-        setSize(800,800);
+        tank = new Tank(200,200,this);
+        setSize(WIDTH,HEIGHT);
         setResizable(false);
         setTitle("Tank War");
         setVisible(true);
@@ -32,6 +41,7 @@ public class TankFrame extends Frame {
         });
         //按键监听事件
         addKeyListener(new MyKeyListener());
+
     }
 
     /**
@@ -41,6 +51,20 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         tank.paint(g);
+        /**
+         * 子弹发射
+         */
+        for(int i=0;i<bullets.size();i++){
+            bullets.get(i).paint(g);
+        }
+
+        Color color = g.getColor();
+        g.setColor(Color.red);
+        //子弹的个数
+        g.drawString("子弹的个数："+bullets.size(),100,50);
+        g.setColor(color);
+
+
     }
 
     /**
@@ -58,6 +82,8 @@ public class TankFrame extends Frame {
                case KeyEvent.VK_DOWN:BD=true;break;
                case KeyEvent.VK_LEFT:BL=true;break;
                case KeyEvent.VK_RIGHT:BR=true;break;
+               case KeyEvent.VK_CONTROL:
+                   tank.fire();
                default:break;
            }
 
@@ -89,5 +115,13 @@ public class TankFrame extends Frame {
             }
         }
 
+    }
+
+    public void addBullets(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
+    public void removeBullets(Bullet bullet) {
+        bullets.remove(bullet);
     }
 }

@@ -9,6 +9,7 @@ import java.awt.*;
  * @date 2020/4/28
  */
 public class Tank {
+
     //坦克坐标
     private int x,y;
     //坦克的方向
@@ -16,15 +17,18 @@ public class Tank {
     //速度
     private final int speed = 10;
 
+    private TankFrame tankFrame;
+
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
     private boolean moving=false;
 
-    public Tank(int x, int y) {
+    public Tank(int x, int y,TankFrame tankFrame) {
         this.x = x;
         this.y = y;
+        this.tankFrame = tankFrame;
     }
 
 
@@ -52,5 +56,10 @@ public class Tank {
 
     public void setDir(Dir dir) {
         this.dir = dir;
+    }
+
+    public void fire() {
+        Bullet bullet = new Bullet(this.x,this.y,tankFrame);
+        tankFrame.addBullets(bullet);
     }
 }
